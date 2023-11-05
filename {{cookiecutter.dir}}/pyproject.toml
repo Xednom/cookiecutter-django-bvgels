@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "{{ cookiecutter.project_name }}"
+version = "0.1.0"
+description = "{{ cookiecutter.description }}"
+authors = ["Xednom <monde.lacanlalay@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = "==3.2.8"
+djoser = "*"
+djangorestframework = "*"
+django-environ = "*"
+django-split-settings = "*"
+django-money = "*"
+django-cors-headers = "*"
+django-post-office = "*"
+drf-writable-nested = "*"
+django-ckeditor = "*"
+xlrd = "*"
+django-filter = "*"
+django-import-export = "*"
+django-bleach = "*"
+django-anymail = {extras = ["mailgun"], version = "*"}
+django-grappelli = "*"
+pytest-django = "*"
+pytest-factoryboy = "*"
+pipenv-poetry-migrate = "*"
+openpyxl = "^3.1.2"
+django-storages = "^1.13.2"
+gunicorn = "^21.2.0"
+whitenoise = "^6.6.0"
+psycopg2-binary = "^2.9.9"
+dj-database-url = "^2.1.0"
+bleach = "3.3.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
