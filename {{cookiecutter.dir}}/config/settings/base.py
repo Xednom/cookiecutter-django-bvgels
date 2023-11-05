@@ -168,8 +168,8 @@ DJOSER = {
         "current_user": "apps.authentication.serializers.CurrentUserSerializer",
     },
     "EMAIL": {
-        "confirmation": "apps.authentication.views.CallMeConfirmationEmail",
-        "password_reset": "apps.authentication.views.CallMePasswordResetEmail",
+        "confirmation": "apps.authentication.views.{{ cookiecutter.project_name }}{{ cookiecutter.display_name }}ConfirmationEmail",
+        "password_reset": "apps.authentication.views.{{ cookiecutter.project_name }}{{ cookiecutter.display_name }}PasswordResetEmail",
     },
 }
 

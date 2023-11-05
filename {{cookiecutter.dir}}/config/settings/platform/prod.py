@@ -2,15 +2,13 @@ import dj_database_url
 
 DEBUG = False
 
-ALLOWED_HOSTS = ["callme.pythonanywhere.com", "call-center.up.railway.app"]
+ALLOWED_HOSTS = []
 
-CORS_ALLOWED_ORIGINS = [
-    "https://call-center.up.railway.app",
-    "https://demo-frontend1.vercel.app",
-]  # added for demo url specific
+CORS_ALLOWED_ORIGINS = []  # added for demo url specific
 
 REST_FRAMEWORK.update(
-    {'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer', )})
+    {"DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",)}
+)
 
 DATABASES = {
     "default": {

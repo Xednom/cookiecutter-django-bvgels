@@ -21,7 +21,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/", include("apps.authentication.urls")),
     path("api/v1/", include("apps.account.urls")),
-    path("api/v1/", include("apps.callme.urls")),
+    path("api/v1/", include("apps.{{ cookiecutter.app_name }}.urls")),
     # path("api/v1/", include("apps.post_paid.urls")),
     # path("api/v1/", include("apps.newsfeed.urls")),
     # path("api/v1/", include("apps.grading.urls")),

@@ -1,12 +1,8 @@
 DEBUG = False
 
-ALLOWED_HOSTS = ["callmeqa.pythonanywhere.com"]
+ALLOWED_HOSTS = []
 
-CORS_ALLOWED_ORIGINS = [
-    "https://psalmsglobal-frontend.vercel.app",
-    "https://psalmsglobal.app",
-    "https://psalmsglobal-frontend-git-feature-admin-interaction-xednom.vercel.app",  # added for demo url specific
-]
+CORS_ALLOWED_ORIGINS = []
 
 
 DATABASES = {

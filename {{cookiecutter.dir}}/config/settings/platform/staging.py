@@ -1,8 +1,8 @@
 DEBUG = False
 
-ALLOWED_HOSTS = ["callmestaging.pythonanywhere.com"]
+ALLOWED_HOSTS = []
 
-CORS_ALLOWED_ORIGINS = ["https://callme-staging.vercel.app"]
+CORS_ALLOWED_ORIGINS = []
 
 DATABASES = {
     "default": {
