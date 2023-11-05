@@ -4,7 +4,6 @@
   "description": "Default description for Company project",
   "app_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}_{{ cookiecutter.display_name.lower().replace(' ', '_') }}",        
   "dir": "{{ cookiecutter.app_name.lower().replace(' ', '_') }}",
-  "use_sentry": "y",
   "sentry_url":"",
   "database_name": "{{ cookiecutter.app_name.lower().replace(' ', '_') }}",
   "database_username":"{{ cookiecutter.database_name}}",
