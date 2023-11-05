@@ -210,8 +210,6 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-{% endif %}
-
 
 ### Windows template
 # Windows thumbnail cache files
