@@ -22,16 +22,6 @@ Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings
 For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
 
 {%- endif %}
-{%- if cookiecutter.use_sentry == "y" %}
-
-### Sentry
-
-Sentry is an error logging aggregator service. You can sign up for a free account at <https://sentry.io/signup/?code=cookiecutter> or download and host it yourself.
-The system is set up with reasonable defaults, including 404 logging and integration with the WSGI application.
-
-You must set the DSN url in production.
-{%- endif %}
-
 ## Deployment
 
 We use railway for our deployment

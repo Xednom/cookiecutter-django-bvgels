@@ -312,16 +312,7 @@ tags
 # Redis dump file
 dump.rdb
 
-### Project template
-{%- if cookiecutter.use_mailpit == 'y' and cookiecutter.use_docker == 'n' %}
-mailpit
-{%- endif %}
-
 .pytest_cache/
-
-{%- if cookiecutter.use_docker == 'y' %}
-.ipython/
-{%- endif %}
 
 {%- if cookiecutter.frontend_pipeline == 'Gulp' %}
 project.css
