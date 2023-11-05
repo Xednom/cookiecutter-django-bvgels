@@ -43,11 +43,6 @@ DJANGO_APPS = [
 LOCAL_APPS = [
     "apps.core",
     "apps.authentication",
-    "apps.account",
-    "apps.callme",
-    "apps.post_paid",
-    "apps.newsfeed",
-    "apps.forum",
 ]
 
 THIRD_PARTY_APPS = [
