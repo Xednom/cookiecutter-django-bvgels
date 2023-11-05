@@ -313,11 +313,3 @@ tags
 dump.rdb
 
 .pytest_cache/
-
-{%- if cookiecutter.frontend_pipeline == 'Gulp' %}
-project.css
-project.min.css
-vendors.js
-*.min.js
-*.min.js.map
-{%- endif %}
