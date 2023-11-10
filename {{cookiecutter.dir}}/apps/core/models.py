@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class TimeStamped(models.Model):
+class BvgelsModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -9,13 +9,13 @@ class TimeStamped(models.Model):
         abstract = True
 
 
-class Tagging(TimeStamped):
+class Tagging(BvgelsModel):
     description = models.TextField(blank=True)
     notes = models.TextField(blank=True)
     additional_info = models.TextField(blank=True)
 
 
-class Comment(TimeStamped):
+class Comment(BvgelsModel):
     user = models.ForeignKey(
         "authentication.User",
         on_delete=models.SET_NULL,
