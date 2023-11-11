@@ -1,6 +1,7 @@
 {
   "project_name": "Display Name for Company ie 'Bvgels'",
-  "display_name": "It can JMS or CRM, HRIS depending on what project",    
+  "display_name": "It can JMS or CRM, HRIS depending on what project",
+  "author_email": "Enter your email address",
   "description": "Default description for Company project",
   "app_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}_{{ cookiecutter.display_name.lower().replace(' ', '_') }}",        
   "dir": "{{ cookiecutter.app_name.lower().replace(' ', '_') }}",
