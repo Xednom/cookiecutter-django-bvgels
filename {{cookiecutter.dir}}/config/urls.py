@@ -20,9 +20,7 @@ urlpatterns = [
     path("grappelli/", include("grappelli.urls")),
     path("admin/", admin.site.urls),
     path("api/auth/", include("apps.authentication.urls")),
-    path("api/v1/", include("apps.account.urls")),
     path("api/v1/", include("apps.{{ cookiecutter.app_name }}.urls")),
-    path("api/v1/", include("apps.forum.urls")),
 ]
 
 admin.site.site_title = "Psalmsglobal Admin site"
