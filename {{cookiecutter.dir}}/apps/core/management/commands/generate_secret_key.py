@@ -6,4 +6,5 @@ class Command(BaseCommand):
     help = "Generate secret key"
 
     def handle(self, *args, **kwargs):
-        self.style.SUCCESS(f"SECRET KEY: {get_random_secret_key()}")
+        secret_key = get_random_secret_key()
+        self.stdout.write(self.style.SUCCESS(f"{secret_key}"))
