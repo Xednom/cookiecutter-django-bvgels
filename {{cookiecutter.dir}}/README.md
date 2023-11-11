@@ -24,3 +24,9 @@ For convenience, you can keep your normal user logged in on Chrome and your supe
 ## Deployment
 
 We use railway for our deployment
+
+# Generate secret key
+
+- To generate a **secret key** and replace the existing one from the env.example, use this command:
+
+      $ python manage.py generate_secret_key
