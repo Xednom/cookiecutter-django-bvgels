@@ -2,7 +2,6 @@ from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 from django.contrib.auth import get_user_model
-from .models import Client, Staff
 
 from djoser.serializers import UserCreateSerializer as BaseUserRegistrationSerializer
 from djoser.serializers import UserSerializer as BaseUserListSerializer

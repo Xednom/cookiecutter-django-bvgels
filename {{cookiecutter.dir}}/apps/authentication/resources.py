@@ -1,5 +1,5 @@
 from import_export import resources
-from apps.authentication.models import User, Client, Staff
+from apps.authentication.models import User
 
 
 class UserResource(resources.ModelResource):
