@@ -10,9 +10,12 @@ class BvgelsModel(models.Model):
 
 
 class Tagging(BvgelsModel):
+    name = models.CharField(max_length=250)
     description = models.TextField(blank=True)
-    notes = models.TextField(blank=True)
     additional_info = models.TextField(blank=True)
+
+    class Meta:
+        abstract = True
 
 
 class Comment(BvgelsModel):
