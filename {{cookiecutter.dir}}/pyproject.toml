@@ -6,7 +6,7 @@ authors = ["Xednom <monde.lacanlalay@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-django = "==3.2.8"
+django = "==4.2"
 djoser = "*"
 djangorestframework = "*"
 django-environ = "*"

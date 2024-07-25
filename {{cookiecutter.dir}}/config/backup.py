@@ -8,7 +8,7 @@ FILE_PREFIX = "my_db_backup_"
 DAYS_TO_KEEP_BACKUP = 3
 FILE_SUFFIX_DATE_FORMAT = "%Y%m%d%H%M%S"
 USERNAME = "{{ cookiecutter.app_name }}"
-DBNAME = USERNAME + "$psalmsglobal"
+DBNAME = USERNAME + "${{cookiecutter.app_name}}"
 
 
 # get today's date and time
