@@ -21,7 +21,7 @@ urlpatterns = [
     path("grappelli/", include("grappelli.urls")),
     path("admin/", admin.site.urls),
     path("api/auth/", include("apps.authentication.urls")),
-    path("api/v1/", include("apps.api.urls")),
+    path("api/v1/", include("apps.api.router")),
 ]
 
 admin.site.site_title = (
