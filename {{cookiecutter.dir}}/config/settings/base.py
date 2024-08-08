@@ -43,7 +43,7 @@ DJANGO_APPS = [
 LOCAL_APPS = [
     "apps.django_bvgels",
     "apps.authentication",
-    "api",
+    "apps.api",
 ]
 
 THIRD_PARTY_APPS = [
