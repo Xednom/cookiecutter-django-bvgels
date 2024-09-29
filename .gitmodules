@@ -1,0 +1,6 @@
+[submodule "{{cookiecutter.dir}}/apps/django_bvgels"]
+	path = {{cookiecutter.dir}}/apps/django_bvgels
+	url = git@github.com:Xednom/django_bvgels.git
+[submodule "{{cookiecutter.dir}}/apps/authentication"]
+	path = {{cookiecutter.dir}}/apps/authentication
+	url = git@github.com:Xednom/django_bvgels_authentication.git

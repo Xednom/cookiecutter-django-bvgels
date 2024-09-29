@@ -41,8 +41,9 @@ DJANGO_APPS = [
 ]
 
 LOCAL_APPS = [
-    "apps.core",
+    "apps.django_bvgels",
     "apps.authentication",
+    "apps.api",
 ]
 
 THIRD_PARTY_APPS = [
@@ -296,7 +297,7 @@ BLEACH_STRIP_COMMENTS = False
 
 BLEACH_DEFAULT_WIDGET = "ckeditor.widgets.CKEditorWidget"
 
-FILE_UPLOAD_HANDLERS = ("django.core.files.uploadhandler.TemporaryFileUploadHandler",)
+FILE_UPLOAD_HANDLERS = ("django.django_bvgels.files.uploadhandler.TemporaryFileUploadHandler",)
 
 # Static file serving.
 # https://whitenoise.readthedocs.io/en/stable/django.html#add-compression-and-caching-support
