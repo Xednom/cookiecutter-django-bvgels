@@ -22,6 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/", include("apps.authentication.urls")),
     path("api/v1/", include("apps.api.router")),
+    path("silk/", include("silk.urls", namespace="silk")),
 ]
 
 admin.site.site_title = (
