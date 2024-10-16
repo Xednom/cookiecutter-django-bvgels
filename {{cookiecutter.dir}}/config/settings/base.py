@@ -300,7 +300,7 @@ BLEACH_STRIP_COMMENTS = False
 BLEACH_DEFAULT_WIDGET = "ckeditor.widgets.CKEditorWidget"
 
 FILE_UPLOAD_HANDLERS = (
-    "django.django_bvgels.files.uploadhandler.TemporaryFileUploadHandler",
+    "django.core.files.uploadhandler.TemporaryFileUploadHandler",
 )
 
 # Static file serving.
