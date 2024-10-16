@@ -194,7 +194,7 @@ EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
 
-GRAPPELLI_ADMIN_TITLE = "Call Center Admin"
+GRAPPELLI_ADMIN_TITLE = "{{ cookiecutter.display_name }} Admin"
 
 
 # Which HTML tags are allowed
