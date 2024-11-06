@@ -55,7 +55,7 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "import_export",
     "django_bleach",
-    "silk"
+    "silk",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
@@ -194,7 +194,7 @@ EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
 
-GRAPPELLI_ADMIN_TITLE = "Call Center Admin"
+GRAPPELLI_ADMIN_TITLE = "{{ cookiecutter.display_name }} Admin"
 
 
 # Which HTML tags are allowed
@@ -299,7 +299,9 @@ BLEACH_STRIP_COMMENTS = False
 
 BLEACH_DEFAULT_WIDGET = "ckeditor.widgets.CKEditorWidget"
 
-FILE_UPLOAD_HANDLERS = ("django.django_bvgels.files.uploadhandler.TemporaryFileUploadHandler",)
+FILE_UPLOAD_HANDLERS = (
+    "django.core.files.uploadhandler.TemporaryFileUploadHandler",
+)
 
 # Static file serving.
 # https://whitenoise.readthedocs.io/en/stable/django.html#add-compression-and-caching-support
