@@ -2,7 +2,7 @@
 
 {{ cookiecutter.description }}
 
-[![Built with Cookiecutter Djangos Bvgels](https://img.shields.io/badge/built%20with-Cookiecutter%20Django%20Bvgels-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
+[![Built with Cookiecutter Djangos Bvgels](https://img.shields.io/badge/built%20with-Cookiecutter%20Django%20Bvgels-ff69b4.svg?logo=cookiecutter)](https://github.com/Xednom/cookiecutter-django-bvgels)
 [![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 ## Settings
