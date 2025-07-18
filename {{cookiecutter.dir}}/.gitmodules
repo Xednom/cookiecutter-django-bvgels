@@ -1,6 +1,6 @@
 [submodule "apps/django_bvgels"]
-	path = django_bvgels
+	path = apps/django_bvgels
 	url = git@github.com:Xednom/django_bvgels.git
 [submodule "apps/authentication"]
-	path = authentication
+	path = apps/authentication
 	url = git@github.com:Xednom/django_bvgels_authentication.git
