@@ -33,6 +33,27 @@ PLATFORM=prod    # For production
 
 By structuring settings in this way, the project maintains environment-specific configurations, keeping local development settings separate from production settings and reducing the risk of configuration errors.
 
+## Git Submodules
+
+This project uses Git submodules for shared components. After generating a new project with cookiecutter, the submodules will be automatically initialized when you run `./setup.sh`.
+
+### Manual Submodule Management
+
+If you need to manually initialize or update submodules:
+
+```bash
+# Initialize and update all submodules
+./init_submodules.sh
+
+# Or manually:
+git submodule init
+git submodule update
+```
+
+### Submodules in this project:
+- `apps/django_bvgels` - Core Django BVGELS functionality
+- `apps/authentication` - Authentication system
+
 ## Basic Commands
 
 ### Setting Up Your Users

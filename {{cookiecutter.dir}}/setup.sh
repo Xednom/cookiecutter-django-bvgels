@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Initialize and update git submodules
+echo "Initializing and updating git submodules..."
+if [ -f .gitmodules ]; then
+    git submodule init
+    git submodule update
+    echo "Git submodules initialized and updated successfully."
+else
+    echo "No .gitmodules file found. Skipping submodule initialization."
+fi
+
 # Function to install Poetry
 install_poetry() {
     echo "Installing Poetry..."
