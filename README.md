@@ -203,7 +203,7 @@ A `config/backup.py` script is included for MySQL database backups on PythonAnyw
 | Issue | Solution |
 |-------|----------|
 | `poetry: command not found` | Run `curl -sSL https://install.python-poetry.org \| python3 -` and add `~/.local/bin` to your PATH |
-| `psycopg2` build fails | Install `libpq-dev` (Debian/Ubuntu) or `postgresql-libs` (macOS) |
+| `psycopg` not found | The project uses `psycopg[binary]` (psycopg 3), not `psycopg2-binary`. On very new Python versions (3.14+), if no wheel is available, install `libpq-dev` and let Poetry build from source |
 | Submodules empty | Run `make setup` or `git submodule update --init --recursive` |
 | Port 5432 already in use | Stop local PostgreSQL or change the port in `docker-compose.yml` |
 
