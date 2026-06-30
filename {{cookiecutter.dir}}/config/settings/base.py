@@ -15,9 +15,14 @@ import json
 import os
 import warnings
 import logging
-import google.auth
-from google.oauth2 import credentials as google_oauth2_credentials
-from google.oauth2 import service_account
+
+try:
+    import google.auth
+    from google.oauth2 import credentials as google_oauth2_credentials
+    from google.oauth2 import service_account
+    HAS_GOOGLE = True
+except ImportError:
+    HAS_GOOGLE = False
 
 from pathlib import Path
 
@@ -326,7 +331,7 @@ GS_IAM_SIGN_BLOB = False
 GS_MEDIA_BUCKET_NAME = env.str("GS_MEDIA_BUCKET_NAME", env.str("GS_BUCKET_NAME", ""))
 
 
-def load_google_credentials():
+def _load_google_credentials():
     """Load Google Cloud credentials from env vars or ADC."""
     logger = logging.getLogger(__name__)
 
@@ -408,7 +413,7 @@ def load_google_credentials():
         return None
 
 
-GS_CREDENTIALS = load_google_credentials()
+GS_CREDENTIALS = _load_google_credentials() if HAS_GOOGLE else None
 
 # Configure storage backends
 if GS_CREDENTIALS and GS_BUCKET_NAME:
