@@ -10,6 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import base64
+import json
+import os
+import warnings
+import logging
+import google.auth
+from google.oauth2 import credentials as google_oauth2_credentials
+from google.oauth2 import service_account
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -56,6 +65,7 @@ THIRD_PARTY_APPS = [
     "import_export",
     "django_bleach",
     "silk",
+    "storages",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
@@ -303,11 +313,131 @@ FILE_UPLOAD_HANDLERS = (
     "django.core.files.uploadhandler.TemporaryFileUploadHandler",
 )
 
-# Static file serving.
-# https://whitenoise.readthedocs.io/en/stable/django.html#add-compression-and-caching-support
-STORAGES = {
-    # ...
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+# Media files (uploads)
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Google Cloud Storage configuration
+GS_BUCKET_NAME = env.str("GS_BUCKET_NAME", "")
+GS_PROJECT_ID = env.str("GS_PROJECT_ID", "")
+GS_DEFAULT_ACL = None  # uniform bucket-level access
+GS_QUERYSTRING_AUTH = True
+GS_IAM_SIGN_BLOB = False
+GS_MEDIA_BUCKET_NAME = env.str("GS_MEDIA_BUCKET_NAME", env.str("GS_BUCKET_NAME", ""))
+
+
+def load_google_credentials():
+    """Load Google Cloud credentials from env vars or ADC."""
+    logger = logging.getLogger(__name__)
+
+    def load_credentials_from_info(info, env_name):
+        credential_type = info.get("type")
+        try:
+            if credential_type == "service_account":
+                return service_account.Credentials.from_service_account_info(info)
+            if credential_type == "authorized_user":
+                return google_oauth2_credentials.Credentials.from_authorized_user_info(info)
+            if credential_type in {
+                "external_account",
+                "external_account_authorized_user",
+                "impersonated_service_account",
+            }:
+                with warnings.catch_warnings():
+                    warnings.filterwarnings(
+                        "ignore",
+                        message=r"The load_credentials_from_dict method is deprecated.*",
+                        category=DeprecationWarning,
+                    )
+                    credentials, _ = google.auth.load_credentials_from_dict(info)
+                return credentials
+        except google.auth.exceptions.DefaultCredentialsError as exc:
+            logger.warning("Invalid %s: %s", env_name, exc)
+            return None
+        logger.warning("Unsupported %s credential type: %s", env_name, credential_type)
+        return None
+
+    def load_credentials_from_json_value(raw_value, env_name):
+        candidates = [raw_value]
+        try:
+            decoded_value = base64.b64decode(raw_value).decode("utf-8")
+        except (ValueError, UnicodeDecodeError):
+            decoded_value = None
+        if decoded_value and decoded_value != raw_value:
+            candidates.append(decoded_value)
+        for candidate in candidates:
+            try:
+                info = json.loads(candidate)
+            except (TypeError, ValueError, json.JSONDecodeError):
+                continue
+            credentials = load_credentials_from_info(info, env_name)
+            if credentials is not None:
+                return credentials
+        return None
+
+    credentials_json_file = env.str("GOOGLE_CREDENTIALS_JSON_FILE", default="")
+    if credentials_json_file:
+        if os.path.exists(credentials_json_file):
+            try:
+                credentials, _ = google.auth.load_credentials_from_file(credentials_json_file)
+                return credentials
+            except google.auth.exceptions.DefaultCredentialsError as exc:
+                logger.warning("Invalid GOOGLE_CREDENTIALS_JSON_FILE path: %s", exc)
+        else:
+            credentials = load_credentials_from_json_value(credentials_json_file, "GOOGLE_CREDENTIALS_JSON_FILE")
+            if credentials is not None:
+                return credentials
+
+    credentials_json = env.str("GOOGLE_CREDENTIALS_JSON", default="")
+    if credentials_json:
+        credentials = load_credentials_from_json_value(credentials_json, "GOOGLE_CREDENTIALS_JSON")
+        if credentials is not None:
+            return credentials
+
+    credentials_path = env.str("GOOGLE_APPLICATION_CREDENTIALS", default="")
+    if credentials_path and os.path.exists(credentials_path):
+        try:
+            credentials, _ = google.auth.load_credentials_from_file(credentials_path)
+            return credentials
+        except google.auth.exceptions.DefaultCredentialsError as exc:
+            logger.warning("Invalid GOOGLE_APPLICATION_CREDENTIALS: %s", exc)
+
+    try:
+        credentials, _ = google.auth.default()
+        return credentials
+    except google.auth.exceptions.DefaultCredentialsError:
+        return None
+
+
+GS_CREDENTIALS = load_google_credentials()
+
+# Configure storage backends
+if GS_CREDENTIALS and GS_BUCKET_NAME:
+    DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+    GS_FILE_OVERWRITE = False
+    GS_CUSTOM_ENDPOINT = None
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+            "OPTIONS": {
+                "bucket_name": GS_BUCKET_NAME,
+                "credentials": GS_CREDENTIALS,
+                "project_id": GS_PROJECT_ID,
+                "default_acl": GS_DEFAULT_ACL,
+                "querystring_auth": GS_QUERYSTRING_AUTH,
+                "file_overwrite": False,
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+else:
+    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }

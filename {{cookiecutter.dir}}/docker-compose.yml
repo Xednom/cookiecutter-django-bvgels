@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "{{ cookiecutter.database_name }}"
+      POSTGRES_USER: "{{ cookiecutter.database_username }}"
+      POSTGRES_PASSWORD: "{{ cookiecutter.database_password }}"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U {{ cookiecutter.database_username }} -d {{ cookiecutter.database_name }}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      target: production
+      args:
+        - PYTHON_VERSION=3.11
+        - POETRY_VERSION=1.8
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - DATABASE_HOST=db
+    command: >
+      sh -c "poetry run python manage.py migrate --noinput &&
+             poetry run python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+
+volumes:
+  pgdata:
