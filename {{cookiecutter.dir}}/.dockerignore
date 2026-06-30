@@ -79,7 +79,7 @@ ipython_config.py
 Pipfile.lock
 
 # poetry
-poetry.lock
+# NOTE: poetry.lock is intentionally NOT excluded — the Dockerfile builder stage needs it
 
 # PEP 582
 __pypackages__/
