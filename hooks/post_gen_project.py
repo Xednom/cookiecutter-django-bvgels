@@ -87,17 +87,42 @@ def main():
         print(f"\n   Found: {poetry_check.stdout.strip()}")
 
     # --- 5. Lock and install dependencies ---
-    run_command("poetry lock --no-update", description="Locking Poetry dependencies")
-    run_command("poetry install --no-root", description="Installing Poetry dependencies")
+    # Try lock --no-update first; if it fails (e.g. stale lock), fall back to full lock
+    lock_result = run_command("poetry lock --no-update", description="Locking Poetry dependencies", check=False)
+    if lock_result.returncode != 0:
+        print("   Lock with --no-update failed. Retrying with full lock...")
+        lock_result = run_command("poetry lock", description="Retrying Poetry lock (full)", check=False)
+        if lock_result.returncode != 0:
+            print("   WARNING: poetry lock failed. You may need to run 'poetry lock' manually.")
 
-    # --- 6. Run migrations ---
+    # Try install --no-root first; if it fails, try full install
+    install_result = run_command("poetry install --no-root", description="Installing Poetry dependencies", check=False)
+    if install_result.returncode != 0:
+        print("   Install with --no-root failed. Retrying with full install...")
+        install_result = run_command("poetry install", description="Retrying Poetry install (full)", check=False)
+        if install_result.returncode != 0:
+            print("   WARNING: poetry install failed. You may need to run 'poetry install' manually.")
+
+    # --- 6. Optional: install Google Cloud Storage backend ---
+    # This is intentionally non-fatal; the project falls back to local filesystem storage
+    # if google-cloud-storage can't be resolved (e.g. very new Python versions).
     run_command(
+        "poetry add google-cloud-storage",
+        description="Installing Google Cloud Storage backend (optional)",
+        check=False,
+    )
+
+    # --- 7. Run migrations ---
+    migrate_result = run_command(
         "poetry run python manage.py migrate",
         description="Applying database migrations",
         check=False,
     )
+    if migrate_result.returncode != 0:
+        print("\n   WARNING: migrations failed. This is normal if the database is not yet running.")
+        print("   Run 'make migrate' or 'make docker-up' after starting the database.")
 
-    # --- 7. Print success message ---
+    # --- 8. Print success message ---
     print("\n" + "=" * 60)
     print("  ✅ Project setup complete!")
     print("=" * 60)
@@ -107,7 +132,7 @@ def main():
 🚀 Quick start:
    cd {os.path.basename(project_dir)}
    make run                  # Run the Django development server
-   make docker-up            # Run everything in Docker
+   make docker-up            # Run everything in Docker (includes DB)
    make migrate              # Run database migrations
    make test                 # Run the test suite
 
