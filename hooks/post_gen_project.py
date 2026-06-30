@@ -51,10 +51,25 @@ def main():
         print("\n   Git repository already initialized.")
 
     # --- 2. Initialize and update submodules ---
+    submodules_ok = True
     gitmodules_path = os.path.join(project_dir, ".gitmodules")
     if os.path.exists(gitmodules_path):
         run_command("git submodule init", description="Initializing Git submodules")
         run_command("git submodule update", description="Updating Git submodules")
+
+        # Check if submodules have actual content (not just empty directories)
+        submodule_dirs = ["apps/django_bvgels", "apps/authentication"]
+        empty_submodules = []
+        for subdir in submodule_dirs:
+            full_path = os.path.join(project_dir, subdir)
+            if not os.path.isdir(full_path) or not os.listdir(full_path):
+                empty_submodules.append(subdir)
+
+        if empty_submodules:
+            submodules_ok = False
+            print(f"\n   ⚠️  Submodules are empty: {', '.join(empty_submodules)}")
+            print("   Migrations will be skipped.")
+            print("   Populate the submodules, then run: make migrate")
     else:
         print("\n   No .gitmodules file found. Skipping submodule initialization.")
 
@@ -113,14 +128,18 @@ def main():
     )
 
     # --- 7. Run migrations ---
-    migrate_result = run_command(
-        "poetry run python manage.py migrate",
-        description="Applying database migrations",
-        check=False,
-    )
-    if migrate_result.returncode != 0:
-        print("\n   WARNING: migrations failed. This is normal if the database is not yet running.")
-        print("   Run 'make migrate' or 'make docker-up' after starting the database.")
+    if submodules_ok:
+        migrate_result = run_command(
+            "poetry run python manage.py migrate",
+            description="Applying database migrations",
+            check=False,
+        )
+        if migrate_result.returncode != 0:
+            print("\n   WARNING: migrations failed. This is normal if the database is not yet running.")
+            print("   Run 'make migrate' or 'make docker-up' after starting the database.")
+    else:
+        print("\n   ⏭️  Skipping migrations because submodules are empty.")
+        print("   Run 'make migrate' after populating submodules.")
 
     # --- 8. Print success message ---
     print("\n" + "=" * 60)
