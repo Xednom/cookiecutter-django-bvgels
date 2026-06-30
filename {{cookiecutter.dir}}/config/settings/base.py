@@ -417,9 +417,6 @@ GS_CREDENTIALS = _load_google_credentials() if HAS_GOOGLE else None
 
 # Configure storage backends
 if GS_CREDENTIALS and GS_BUCKET_NAME:
-    DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-    GS_FILE_OVERWRITE = False
-    GS_CUSTOM_ENDPOINT = None
     STORAGES = {
         "default": {
             "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
@@ -437,7 +434,6 @@ if GS_CREDENTIALS and GS_BUCKET_NAME:
         },
     }
 else:
-    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
     STORAGES = {
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
